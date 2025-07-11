@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная - Фото Галерея Онлайн{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+            <h1 class="display-4">Добро пожаловать в Фото Галерею!</h1>
+            <p class="lead">Загружайте, делитесь и наслаждайтесь красивыми фотографиями от пользователей со всего мира.</p>
+            {% if not user.is_authenticated %}
+            <hr class="my-4">
+            <p>Зарегистрируйтесь, чтобы загружать свои фотографии и взаимодействовать с сообществом.</p>
+            <a class="btn btn-light btn-lg" href="{% url 'register' %}" role="button">Присоединиться</a>
+            {% else %}
+            <hr class="my-4">
+            <a class="btn btn-light btn-lg" href="{% url 'upload_photo' %}" role="button">Загрузить фото</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Категории -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>Категории</h2>
+        <div class="row">
+            {% for category in categories %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <p class="card-text">{{ category.description|truncatewords:10 }}</p>
+                        <a href="{% url 'gallery' %}?category={{ category.id }}" class="btn btn-primary">Посмотреть</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Последние фотографии -->
+<div class="row">
+    <div class="col-12">
+        <h2>Последние фотографии</h2>
+        {% if photos %}
+        <div class="row">
+            {% for photo in photos %}
+            <div class="col-md-4 mb-4">
+                <div class="card photo-card">
+                    <img src="{{ photo.image.url }}" class="card-img-top photo-thumbnail" alt="{{ photo.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ photo.title }}</h5>
+                        <p class="card-text">{{ photo.description|truncatewords:15 }}</p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                {{ photo.user.username }} • {{ photo.created_at|date:"d.m.Y" }}
+                            </small>
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'photo_detail' photo.id %}" class="btn btn-primary btn-sm">Подробнее</a>
+                            <div>
+                                <span class="text-muted">
+                                    ❤️ {{ photo.likes.count }}
+                                    💬 {{ photo.comments.count }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'gallery' %}" class="btn btn-outline-primary btn-lg">Посмотреть все фотографии</a>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <h4>Пока нет фотографий</h4>
+            <p>Станьте первым, кто загрузит фотографию!</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'upload_photo' %}" class="btn btn-primary">Загрузить фото</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Статистика -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body text-center">
+                <h3>Статистика сайта</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>{{ photos|length }}+</h4>
+                        <p>Фотографий</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>{{ categories|length }}</h4>
+                        <p>Категорий</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Активное</h4>
+                        <p>Сообщество</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

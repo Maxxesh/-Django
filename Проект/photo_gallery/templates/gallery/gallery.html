@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Галерея - Фото Галерея Онлайн{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1>Галерея фотографий</h1>
+
+        <!-- Фильтры и сортировка -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="category" class="form-label">Категория:</label>
+                        <select name="category" id="category" class="form-select">
+                            <option value="">Все категории</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}" {% if current_category == category.id|stringformat:"s" %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="sort" class="form-label">Сортировка:</label>
+                        <select name="sort" id="sort" class="form-select">
+                            <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Сначала новые</option>
+                            <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>Сначала старые</option>
+                            <option value="popular" {% if current_sort == 'popular' %}selected{% endif %}>По популярности</option>
+                            <option value="most_commented" {% if current_sort == 'most_commented' %}selected{% endif %}>По комментариям</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Применить</button>
+                            <a href="{% url 'gallery' %}" class="btn btn-outline-secondary">Сбросить</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Фотографии -->
+        {% if page_obj %}
+        <div class="row">
+            {% for photo in page_obj %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card photo-card h-100">
+                    <img src="{{ photo.image.url }}" class="card-img-top photo-thumbnail" alt="{{ photo.title }}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ photo.title }}</h5>
+                        <p class="card-text flex-grow-1">{{ photo.description|truncatewords:20 }}</p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                Категория: {{ photo.category.name }}<br>
+                                Автор: {{ photo.user.username }}<br>
+                                Дата: {{ photo.created_at|date:"d.m.Y H:i" }}
+                            </small>
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <a href="{% url 'photo_detail' photo.id %}" class="btn btn-primary btn-sm">Подробнее</a>
+                            <div>
+                                <span class="text-muted">
+                                    ❤️ {{ photo.likes.count }}
+                                    💬 {{ photo.comments.count }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Пагинация -->
+        {% if page_obj.has_other_pages %}
+        <nav aria-label="Навигация по страницам">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}">Первая</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}">Предыдущая</a>
+                </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">
+                        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}">Следующая</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}">Последняя</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+        {% else %}
+        <div class="alert alert-info">
+            <h4>Фотографии не найдены</h4>
+            <p>Попробуйте изменить параметры поиска или загрузите свою первую фотографию!</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'upload_photo' %}" class="btn btn-primary">Загрузить фото</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

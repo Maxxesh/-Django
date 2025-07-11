@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ photo.title }} - Фото Галерея Онлайн{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Фотография -->
+        <div class="card mb-4">
+            <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.title }}" style="max-height: 600px; object-fit: contain; width: 100%;">
+            <div class="card-body">
+                <h1 class="card-title">{{ photo.title }}</h1>
+                <p class="card-text">{{ photo.description }}</p>
+
+                <!-- Информация о фотографии -->
+                <div class="row text-muted mb-3">
+                    <div class="col-sm-6">
+                        <strong>Автор:</strong> {{ photo.user.username }}<br>
+                        <strong>Категория:</strong> {{ photo.category.name }}<br>
+                        <strong>Дата загрузки:</strong> {{ photo.created_at|date:"d.m.Y H:i" }}
+                    </div>
+                    <div class="col-sm-6">
+                        <strong>Лайки:</strong> <span id="like-count-{{ photo.id }}">{{ photo.likes.count }}</span><br>
+                        <strong>Комментарии:</strong> {{ photo.comments.count }}
+                    </div>
+                </div>
+
+                <!-- Кнопки действий -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        {% if user.is_authenticated %}
+                        <button type="button" class="btn btn-outline-danger like-button"
+                                id="like-btn-{{ photo.id }}"
+                                onclick="toggleLike({{ photo.id }})">
+                            {% if user_liked %}❤️{% else %}🤍{% endif %}
+                        </button>
+                        {% else %}
+                        <span class="text-muted">❤️ {{ photo.likes.count }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <a href="{% url 'gallery' %}" class="btn btn-secondary">Вернуться к галерее</a>
+                        {% if user == photo.user or user.is_staff %}
+                        <a href="#" class="btn btn-outline-danger" onclick="confirmDelete()">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Форма комментария -->
+        {% if user.is_authenticated %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Добавить комментарий</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <p>Чтобы оставить комментарий, необходимо войти в систему.</p>
+                <a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Комментарии -->
+        <div class="card">
+            <div class="card-header">
+                <h5>Комментарии ({{ comments.count }})</h5>
+            </div>
+            <div class="card-body">
+                {% if comments %}
+                {% for comment in comments %}
+                <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <strong>{{ comment.user.username }}</strong>
+                        <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+                    </div>
+                    <p class="mb-0 mt-1">{{ comment.text }}</p>
+                    {% if user.is_staff %}
+                    <small>
+                        <a href="#" class="text-danger" onclick="deleteComment({{ comment.id }})">Удалить</a>
+                    </small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-muted">Пока нет комментариев. Будьте первым!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно подтверждения удаления -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить эту фотографию? Это действие нельзя отменить.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <a href="{% url 'delete_photo' photo.id %}" class="btn btn-danger">Удалить</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function confirmDelete() {
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+}
+
+function deleteComment(commentId) {
+    if (confirm('Вы уверены, что хотите удалить этот комментарий?')) {
+        // Здесь можно добавить AJAX для удаления комментария
+        window.location.reload();
+    }
+}
+</script>
+{% endblock %}
