@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Аккаунт заблоковано{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 text-danger">Ваш аккаунт заблоковано!</h1>
+            <p class="lead">
+                На жаль, ваш доступ до цього сайту було тимчасово або назавжди заблоковано.
+            </p>
+            <p>
+                Будь ласка, зверніться до адміністрації для отримання додаткової інформації або розблокування.
+            </p>
+            <p>
+                <a href="{% url 'users:login' %}" class="btn btn-outline-primary mt-3">Повернутися на сторінку входу</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

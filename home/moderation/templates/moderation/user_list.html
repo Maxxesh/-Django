@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Модерація Користувачів{% endblock %}
+
+{% block content %}
+<h2>Користувачі</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ім'я користувача</th>
+            <th>Email</th>
+            <th>Активний</th>
+            <th>Персонал</th>
+            <th>Дата реєстрації</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{% if user.is_active %}Так{% else %}Ні{% endif %}</td>
+            <td>{% if user.is_staff %}Так{% else %}Ні{% endif %}</td>
+            <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td> 
+            <td>
+                
+                <a href="/moderation/user_detail/{{user.id}}" class="btn btn-warning btn-sm">Деталі</a> 
+                {% if user.is_blocked %}
+                    <a href="/moderation/user/{{user.id}}/block/" class="btn btn-success btn-sm">Розблокувати</a> 
+                {% else %}
+                    <a href="/moderation/user/{{user.id}}/block/" class="btn btn-danger btn-sm">Блокувати</a> 
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

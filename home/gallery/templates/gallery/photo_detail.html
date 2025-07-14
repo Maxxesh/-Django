@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}{{ photo.title }}{% endblock %}
+{% block content %}
+<h2>{{ photo.title }}</h2>
+<img src="{{ photo.image.url }}" class="img-fluid mb-3" alt="{{ photo.title }}">
+<p>{{ photo.description }}</p>
+<p><strong>Автор:</strong> {{ photo.author.username }}</p>
+<p><strong>Дата:</strong> {{ photo.created_at }}</p>
+{% endblock %}

@@ -1,0 +1,15 @@
+{{% extends "base.html" %}}
+{% block title %}Категорії{% endblock %}
+{% block content %}
+<h2>Користувачі</h2>
+<ul>
+{% for user in users %}
+    <li>
+    {{ user.username }} - {% if user.is_blocked %}Заблокований
+    {% else %}
+        <a href="{% url 'moderation:block_user' user.pk %}" class="btn btn-warning">Заблокувати</a>
+    {% endif %}
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

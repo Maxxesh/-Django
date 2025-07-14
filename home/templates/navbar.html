@@ -1,0 +1,26 @@
+<!-- templates/navbar.html -->
+ {%load static%}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Галерея</a>
+        
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    {% if user.is_staff%}
+                        <li class="nav-item"><a class="nav-link" href="/moderation">Модерація</a></li>
+                    {% endif %} 
+                    <li class="nav-item"><a class="nav-link" href="/upload/">Завантажити</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/users/profile/">Профіль</a></li>
+                    <li class="nav-item"><form method="post" action="{% url 'users:logout' %}">
+                                            {% csrf_token %}
+                                            <button type="submit"  class="no-style-button">Выйти</button>
+                                        </form></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="/users/login/">Увійти</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/users/register/">Реєстрація</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

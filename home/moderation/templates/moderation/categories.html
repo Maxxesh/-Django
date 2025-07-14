@@ -1,0 +1,16 @@
+{% load crispy_forms_tags %}
+<ul id= "category-list" class= "category-list-style" >
+    {% for category in categories %}
+        <li id="item-{{ category.id }}" data-item-id="{{ category.id }}" class="editable-item">
+            <span class="item-display">{{ category.name }}</span> 
+            <input type="text" class="item-input" value="{{ item.name }}" style="display: none;">
+            <button type="button" class="btn btn-danger">Видалити</button>
+        </li>
+    {% endfor %}
+</ul>
+<form method="POST" class="category-list-style">
+    {% csrf_token %}
+    {{ form|crispy }} 
+
+    <button type="submit" class="btn btn-success">Додати</button>
+</form>
