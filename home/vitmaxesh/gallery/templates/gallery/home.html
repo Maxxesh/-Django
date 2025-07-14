@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{%load static%}
+{% block title %}Головна{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-2 mb-3">
+        <select id="filter-category" class="form-select" style="width: 200px; margin-bottom: 20px;">
+                <option value=""{% if not selected_category %}selected{% endif %}>Всі категорії</option>
+            {%for category in categories%}
+                 <option value="{{category.name}}" {% if selected_category == category.name %}selected{% endif %}>{{category.name}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="col-md-2 mb-3">
+        <select id="sort-select" class="form-select" style="width: 200px; margin-bottom: 20px;">
+            <option value=""disabled >Сортувати за:</option>
+            <option value="date"{% if selected_sort == 'date' %}selected{% endif %}>Сортувати за датою</option>
+            <option value="likes"{% if selected_sort == 'likes' %}selected{% endif %}>Сортувати за лайками</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    {% for photo in photos %}
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ photo.title }}</h5>
+                <a href="{% url 'gallery:photo_detail' photo.pk %}" class="btn btn-sm btn-outline-primary">Переглянути</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Немає фото для перегляду.</p>
+    {% endfor %}
+</div>
+<script src="{% static 'js/frontend/gallery_filters.js' %}"></script>
+{% endblock %}

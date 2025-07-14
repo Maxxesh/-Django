@@ -1,0 +1,32 @@
+<div class="statistics-content">
+    <div class="row mb-3">
+        <div class="col-6">
+            <h5 class="card-subtitle mb-2 text-muted">Користувачів:</h5>
+            <p class="card-text fs-4 fw-bold">{{ total_users }}</p>
+        </div>
+        <div class="col-6">
+            <h5 class="card-subtitle mb-2 text-muted">Фотографій:</h5>
+            <p class="card-text fs-4 fw-bold">{{ total_photos }}</p>
+        </div>
+    </div>
+
+    <h5 class="card-subtitle mb-2 text-muted">Категорії:</h5>
+    <ul class="list-group list-group-flush">
+        {% for cat in categories %}
+            <li class="list-group-item d-flex justify-content-between align-items-center py-1 ps-0 pe-0">
+                <span class="category-name me-2">{{ cat.name }}</span>
+
+                <span class="badge bg-secondary rounded-pill">{{ cat.photo_count }} фото</span>
+            </li>
+        {% endfor %}
+    </ul>
+    <h5 class="card-subtitle mb-2 text-muted">Топ користувачів за фото:</h5>
+    <ul class="list-group list-group-flush">
+        {% for user in users_with_photo_counts %}
+            <li class="list-group-item d-flex justify-content-between align-items-center py-1 ps-0 pe-0">
+                <span class="user-name me-2">{{ user.username }}</span>
+                <span class="badge bg-primary rounded-pill">{{ user.uploaded_photo_count }} фото</span> 
+            </li>
+        {% endfor %}
+    </ul>
+      </div>

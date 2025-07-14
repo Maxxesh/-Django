@@ -1,0 +1,46 @@
+.form-input {
+    width: 300px;
+    font-size: 16px;
+}
+.my-custom-thumbnail{
+    width: 20px;
+    height: 20px;
+}
+
+.no-style-button{
+    background: none; 
+                    border: none; 
+                    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x); 
+                    color: var(--bs-nav-link-color); 
+                    cursor: pointer; 
+                    -webkit-appearance: none; 
+                    -moz-appearance: none; 
+                    appearance: none; 
+                    text-align: inherit; /* Выравнивание текста */
+                    width: 100%; /* Занять всю ширину родителя li */
+                    white-space: nowrap; /* Не переносить текст */
+}
+
+.editable-item{
+  display: flex; /* Делаем li Flex-контейнером */
+    align-items: center; /* Выравниваем элементы по центру по вертикали */
+    justify-content: space-between; /* Распределяем пространство между элементами */
+    gap: 10px; /* Добавляем небольшой отступ между элементами */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.item-display {
+    
+    white-space: nowrap; /* Предотвращает перенос текста на новую строку */
+    overflow: hidden; /* Обрезает текст, если он слишком длинный */
+    text-overflow: ellipsis; /* Добавляет многоточие, если текст обрезан */
+}
+
+.category-list-style{
+    list-style: none;
+    padding-left: 0;
+    margin:0px 16px 16px 16px;
+}

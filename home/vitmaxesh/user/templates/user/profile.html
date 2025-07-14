@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Профіль{% endblock %}
+
+{% block content %}
+<div class="container mt-5"> 
+    <div class="row justify-content-center"> 
+        <div class="col-md-8 col-lg-6"> 
+            <div class="card"> 
+                <div class="card-header text-center">
+                    <h3 class="mb-0">Ваш профіль</h3> 
+                </div>
+                <div class="card-body">
+                    {% if user.avatar %}
+                        <div class="text-center mb-4"> 
+                            <img src="{{ user.avatar.url }}" alt="{{ user.username }} Avatar" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+                    {% else %}
+                        <div class="text-center mb-4">
+                            <img src="https://via.placeholder.com/150" alt="Default Avatar" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;"> {# Placeholder if no avatar #}
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Користувач:</label> 
+                        <p class="form-control-plaintext">{{ user.username }}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Email:</label>
+                        <p class="form-control-plaintext">{{ user.email }}</p>
+                    </div>
+
+                    {% if user.full_name %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Повне ім'я:</label>
+                        <p class="form-control-plaintext">{{ user.full_name }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if user.city %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Місто:</label>
+                        <p class="form-control-plaintext">{{ user.city }}</p>
+                    {% endif %}
+{% endblock %}

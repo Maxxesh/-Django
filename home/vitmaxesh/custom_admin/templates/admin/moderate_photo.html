@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}модерація фото{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h2>Модерація фото: {{ photo.title }}</h2>
+<img src="{{ photo.image.url }}" alt="{{ photo.title }}" width="400">
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }} 
+    <button type="submit" class="btn btn-danger">Заблокувати</button>
+</form>
+{% endblock %}
