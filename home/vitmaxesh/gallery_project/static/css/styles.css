@@ -1,0 +1,68 @@
+.form-input {
+    width: 300px;
+    font-size: 16px;
+}
+.my-custom-thumbnail{
+    width: 20px;
+    height: 20px;
+}
+
+.no-style-button{
+    background: none;
+                    border: none;
+                    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+                    color: #8dc489;
+                    cursor: pointer;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    text-align: inherit;
+                    width: 100%;
+                    white-space: nowrap;
+}
+
+.navbar-brand {
+  font-family: 'Special Gothic Expanded One', sans-serif;
+  /* Сохраняем все оригинальные переменные Bootstrap */
+  padding-top: var(--bs-navbar-brand-padding-y);
+  padding-bottom: var(--bs-navbar-brand-padding-y);
+  margin-right: var(--bs-navbar-brand-margin-end);
+  font-size: var(--bs-navbar-brand-font-size);
+  color: var(--bs-navbar-brand-color);
+  text-decoration: none;
+  /* Дополнительные кастомные свойства */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Остальной навбар оставляем со стандартным шрифтом */
+.navbar {
+    font-family: 'Special Gothic Expanded One', sans-serif;  /* Стандартный шрифт Bootstrap */
+}
+
+.editable-item{
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.item-display {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-navbar {
+    background-color:#678d40 !important;
+}
+
+.category-list-style{
+    list-style: none;
+    padding-left: 0;
+    margin:0px 16px 16px 16px;
+}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Account has been blocked{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 text-danger">Your account is blocked!</h1>
+            <p class="lead">
+                Unfortunately, your access to this site has been temporarily or permanently blocked.
+            </p>
+            <p>
+                Please contact the administration for more information or to unlock.
+            </p>
+            <p>
+                <a href="{% url 'users:login' %}" class="btn btn-outline-primary mt-3">Return to the login page</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

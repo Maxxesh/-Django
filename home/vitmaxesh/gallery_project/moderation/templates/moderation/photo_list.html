@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Photos Moderation{% endblock %}
+{% block content %}
+<h2>Photos are on moderation</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>A preview</th>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for photo in photos %}
+        <tr>
+            <td><img src="{{ photo.image.url }}" width="100"></td>
+            <td>{{ photo.title }}</td>
+            <td>{{ photo.author.username }}</td>
+            <td>{{ photo.description|truncatechars:50 }}</td>
+            <td>
+                <a href="/moderation/photo/{{photo.id}}/approve/" class="btn btn-success btn-sm">✅</a>
+                <a href="/moderation/photo/{{photo.id}}/moderate/" class="btn btn-danger btn-sm">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
